@@ -3,7 +3,8 @@ module InlineTicket
   mattr_accessor :ticket_ids
   
   def self.render_ticket(issue)
-    res = "##{issue.id} <a href='/issues/#{issue.id}'><b>#{issue.subject}</b></a> "
+    res = "<li><p>"
+    res += "##{issue.id} <a href='/issues/#{issue.id}'><b>#{issue.subject}</b></a> "
     if issue.description && !issue.description.blank?
       res += " -- " + issue.description[0..100] + " "
     end
@@ -14,6 +15,7 @@ module InlineTicket
     if !tags.empty?
       res += "<span style='font-size: 0.8em;'>(#{tags})</span>"
     end
+    res += "</p></li>"
     res
   end
 
@@ -29,16 +31,17 @@ module InlineTicket
     desc "render the list of tickets that are currently stashed, and then the total number of hours for all those tickets"
     macro :render_tickets do
       hrs = 0
-      res = ""
+      res = "<ul>"
       
       includes = defined?(IssueTag) ? [:issue_tags] : []
       issues = Issue.find(:all, :conditions => {:id => InlineTicket.ticket_ids}, :include => includes)
       issues.each do |issue|
-        res += InlineTicket.render_ticket(issue) + "<br/><br/>"
+        res += InlineTicket.render_ticket(issue)
         hrs += issue.estimated_hours.to_f
       end
       InlineTicket.ticket_ids = []
-      res += "#{hrs} hours total"
+      res += "<li style='list-style: none;'><p>#{hrs} hours total</p></li>"
+      res += "</ul>"
       res
     end
   end
