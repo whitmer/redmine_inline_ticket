@@ -1,3 +1,18 @@
 = inline_ticket
 
-Description goes here
+Inline tickets in rdoc
+
+{{ticket(1, "cool ticket")}}
+{{ticket(2, "this text is just for reference"}}
+{{ticket(3, "helps me when I'm reordering tickets"}}
+{{render_tickets}}
+
+This will render the tickets inline as a list, including
+the names, descriptions, estimated hours and tags inline.
+Then at the end it will print out the sum estimated
+time for all the stashed tickets.
+
+The only reason I don't render the tickets as we go
+and instead do render_tickets at the end is so I can
+cut down on the number of active_record finds and just
+stash the ids with the call to ticket.
