@@ -3,8 +3,11 @@
 Inline tickets in rdoc
 
 {{ticket(1, "cool ticket")}}
+
 {{ticket(2, "this text is just for reference"}}
+
 {{ticket(3, "helps me when I'm reordering tickets"}}
+
 {{render_tickets}}
 
 This will render the tickets inline as a list, including
