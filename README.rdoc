@@ -2,20 +2,23 @@
 
 Inline tickets in rdoc
 
-{{ticket(1, "cool ticket")}}
+{{prefetch_tickets(1,2)}}
 
-{{ticket(2, "this text is just for reference"}}
+* {{ticket(1, "cool ticket")}}
 
-{{ticket(3, "helps me when I'm reordering tickets"}}
+* {{ticket(2, "this text is just for reference"}}
 
-{{render_tickets}}
+* something else that goes in between
+
+* {{ticket(3, "helps me when I'm reordering tickets"}}
+
+{{ticket_hours}}
 
 This will render the tickets inline as a list, including
 the names, descriptions, estimated hours and tags inline.
 Then at the end it will print out the sum estimated
 time for all the stashed tickets.
 
-The only reason I don't render the tickets as we go
-and instead do render_tickets at the end is so I can
-cut down on the number of active_record finds and just
-stash the ids with the call to ticket.
+You can optionally prefetch the tickets if you know
+the ids that are going to be in the page, to cut down
+on the number of database lookups.
