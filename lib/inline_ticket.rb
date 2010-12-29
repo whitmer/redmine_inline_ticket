@@ -24,7 +24,7 @@ module InlineTicket
 
   Redmine::WikiFormatting::Macros.register do
     desc "prefetch a list of tickets to be rendered somewhere in this page"
-    macro :prefetch_tickets do |*ids|
+    macro :prefetch_tickets do |stuff, ids|
       includes = defined?(IssueTag) ? [:issue_tags] : []
       InlineTicket.fetched_tickets = Issue.find(:all, :conditions => {:id => ids}, :include => includes)
       InlineTicket.hours = 0.0
@@ -33,8 +33,10 @@ module InlineTicket
   end
   
   Redmine::WikiFormatting::Macros.register do
-    desc "stash the ticket id to be rendered in next call to render_tickets... second argument is a string description for reference"
-    macro :ticket do |id, str|
+    desc "render the ticket"
+    macro :ticket do |stuff, args|
+      id, str = args
+      id = id.to_i
       ticket = (InlineTicket.fetched_tickets || []).detect{|t| t.id == id }
       if !ticket
         includes = defined?(IssueTag) ? [:issue_tags] : []
@@ -44,7 +46,7 @@ module InlineTicket
     end
   end
   Redmine::WikiFormatting::Macros.register do
-    desc "render the list of tickets that are currently stashed, and then the total number of hours for all those tickets"
+    desc "total number of hours for all those tickets"
     macro :ticket_hours do
       hrs = InlineTicket.hours ||= 0.0
       InlineTicket.hours = 0.0
