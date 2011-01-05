@@ -6,7 +6,7 @@ module InlineTicket
   def self.render_ticket(issue)
     res = "<p>"
     res += "<del>" if issue.closed?
-    res += "<a href='/issues/#{issue.id}'><b>#{issue.subject}</b></a>"
+    res += "<a href='/issues/#{issue.id}' style='color: #000;'><b>#{issue.subject}</b></a>"
     res += "</del>" if issue.closed?
     res += " ##{issue.id} "
     if issue.description && !issue.description.blank?
